@@ -3,17 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Загрузка файлов</title>
+    <title>Загрузка фотографий</title>
 </head>
 <body>
-    <form enctype="multipart/form-data" action="upload.php" method="post">
-        <label for="file">Выберите файл:</label>
-        <input type="file" name="file" id="file" accept="image/*" required>
-        <br>
-        <label for="name">Введите имя:</label>
-        <input type="text" name="name" id="name" required>
-        <br>
-        <input type="submit" value="Загрузить файл">
+    <h1>Загрузка фотографий</h1>
+
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="photo">Выберите фото:</label>
+        <input type="file" id="photo" name="photo" accept="image/*">
+        <button type="button" onclick="uploadPhoto()">Загрузить</button>
     </form>
+
+    <div id="photoGallery">
+        <!-- Здесь будет отображаться галерея фотографий -->
+    </div>
+
+    <script>
+        function uploadPhoto() {
+            // Получение элемента input с типом file
+            var input = document.getElementById('photo');
+
+            // Проверка наличия выбранного файла
+            if (input.files.length > 0) {
+                // Создание объекта FileReader
+                var reader = new FileReader();
+
+                // Определение функции, которая будет выполнена при завершении чтения файла
+                reader.onload = function (e) {
+                    // Создание элемента img для отображения загруженной фотографии
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.maxWidth = '300px'; // Максимальная ширина изображения
+
+                    // Добавление изображения в галерею
+                    document.getElementById('photoGallery').appendChild(img);
+                };
+
+                // Чтение данных из файла как URL-адрес данных (data URL)
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                alert('Выберите файл для загрузки.');
+            }
+        }
+    </script>
 </body>
 </html>
